@@ -3,7 +3,7 @@ package org.server;
 import org.gui.chat.ChatArea;
 import org.KidPaint;
 import org.gui.UI;
-import org.gui.UserNameInput;
+import org.gui.peripherials.UserNameInput;
 
 import java.io.*;
 import java.net.InetAddress;

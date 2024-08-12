@@ -1,6 +1,6 @@
 package org.gui.chat;
 
-import org.gui.UserNameInput;
+import org.gui.peripherials.UserNameInput;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

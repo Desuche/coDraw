@@ -1,4 +1,7 @@
-package org.gui;
+package org.gui.peripherials;
+
+import org.gui.studioselection.StudioSelectionUI;
+import org.gui.UI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +16,7 @@ public class UserNameInput extends JDialog {
     private final JTextField inputField;
     private String inputText;
 
-    private StudioSelectionPopup studioSelectionPopup;
+    private StudioSelectionUI studioSelectionUI;
 
     public static UserNameInput getInstance() {
         if (instance == null)
@@ -72,13 +75,13 @@ public class UserNameInput extends JDialog {
         System.out.println("Username is " + inputText);
         ((UI)parent).loadusername(inputText);
         dispose();
-        if (studioSelectionPopup != null){
-            studioSelectionPopup.setVisible(true);
+        if (studioSelectionUI != null){
+            studioSelectionUI.setVisible(true);
         }
     }
 
-    public void setVisibleAfterClose(StudioSelectionPopup studioSelectionPopup){
-        this.studioSelectionPopup = studioSelectionPopup;
+    public void setVisibleAfterClose(StudioSelectionUI studioSelectionUI){
+        this.studioSelectionUI = studioSelectionUI;
     }
 
 

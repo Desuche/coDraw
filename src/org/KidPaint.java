@@ -2,9 +2,9 @@ package org;
 
 
 import org.gui.chat.ChatArea;
-import org.gui.StudioSelectionPopup;
+import org.gui.studioselection.StudioSelectionUI;
 import org.gui.UI;
-import org.gui.UserNameInput;
+import org.gui.peripherials.UserNameInput;
 import org.server.ExternalConnectedServer;
 import org.server.InternalServer;
 
@@ -33,16 +33,16 @@ public class KidPaint {
         ui.setVisible(true);                // set the ui
 
         UserNameInput userNameInput = UserNameInput.getInstance();
-        StudioSelectionPopup studioSelectionPopup = StudioSelectionPopup.getInstance();
+        StudioSelectionUI studioSelectionUI = StudioSelectionUI.getInstance();
 
-        userNameInput.setVisibleAfterClose(studioSelectionPopup);
+        userNameInput.setVisibleAfterClose(studioSelectionUI);
         userNameInput.setVisible(true);  // launch the username dialog box
 
     }
 
     public static void restart() {
         //Kill everybody worth killing
-        StudioSelectionPopup.kill(); //kill ssp and sf
+        StudioSelectionUI.kill(); //kill ssp and sf
 
         if (InternalServer.isRunning()){
             InternalServer.getInstance().kill();
@@ -86,8 +86,8 @@ public class KidPaint {
 
 
 
-        StudioSelectionPopup studioSelectionPopup = StudioSelectionPopup.getInstance();
-        studioSelectionPopup.setVisible(true);
+        StudioSelectionUI studioSelectionUI = StudioSelectionUI.getInstance();
+        studioSelectionUI.setVisible(true);
 
 
 
@@ -103,7 +103,7 @@ public class KidPaint {
                 JOptionPane.WARNING_MESSAGE
         );
         //Kill everybody worth killing
-        StudioSelectionPopup.kill(); //kill ssp and sf
+        StudioSelectionUI.kill(); //kill ssp and sf
 
         if (InternalServer.isRunning()){
             InternalServer.getInstance().kill();
@@ -127,8 +127,8 @@ public class KidPaint {
 
 
 
-        StudioSelectionPopup studioSelectionPopup = StudioSelectionPopup.getInstance();
-        studioSelectionPopup.setVisible(true);
+        StudioSelectionUI studioSelectionUI = StudioSelectionUI.getInstance();
+        studioSelectionUI.setVisible(true);
 
 
 

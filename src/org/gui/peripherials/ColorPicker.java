@@ -1,4 +1,6 @@
-package org.gui;
+package org.gui.peripherials;
+
+import org.gui.UI;
 
 import javax.imageio.ImageIO;
 import javax.swing.JDialog;

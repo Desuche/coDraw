@@ -1,7 +1,7 @@
 package org.server;
 
 import org.KidPaint;
-import org.gui.UserNameInput;
+import org.gui.peripherials.UserNameInput;
 
 import java.io.IOException;
 import java.net.*;

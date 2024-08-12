@@ -1,9 +1,6 @@
-package org.gui;
+package org.gui.studioselection;
 
-import org.KidPaint;
-import org.gui.chat.ChatArea;
-import org.server.ExternalConnectedServer;
-import org.server.InternalServer;
+import org.gui.UI;
 import org.server.ServerFinder;
 
 import javax.swing.*;
@@ -12,17 +9,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class StudioSelectionPopup extends JDialog {
-    private static StudioSelectionPopup instance = null;
-    private final JFrame parent;
-    private final JPanel serverListPanel;
+public class StudioSelectionUI extends JDialog {
+    private static StudioSelectionUI instance = null;
+    protected final JFrame parent;
+    protected final JPanel serverListPanel;
 
-    private boolean isActive = true;
+    protected boolean isActive = true;
 
 
-    public static StudioSelectionPopup getInstance() {
+    public static StudioSelectionUI getInstance() {
         if (instance == null)
-            instance = new StudioSelectionPopup(UI.getInstance());
+            instance = new StudioSelectionUI(UI.getInstance());
         return instance;
     }
 
@@ -32,7 +29,7 @@ public class StudioSelectionPopup extends JDialog {
     }
 
 
-    private StudioSelectionPopup(JFrame parent) {
+    private StudioSelectionUI(JFrame parent) {
         super(parent, true);
         this.parent = parent;
 
@@ -56,7 +53,7 @@ public class StudioSelectionPopup extends JDialog {
                 public void actionPerformed(ActionEvent e) {
                     isActive = false;
                     dispose();
-                    joinServer(server);
+                    StudioSelectionServices.joinServer(server);
                 }
             });
             serverListPanel.add(button);
@@ -71,7 +68,7 @@ public class StudioSelectionPopup extends JDialog {
         JButton inviteCodeButton = new JButton("Use Invite Code");
         inviteCodeButton.setPreferredSize(new Dimension(130, 20));
         inviteCodeButton.addActionListener((ActionEvent e) -> {
-            processInviteCode();
+            StudioSelectionServices.processInviteCode(this);
         });
 
         JPanel inviteCodeButtonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -83,7 +80,7 @@ public class StudioSelectionPopup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 isActive = false;
                 dispose();
-                startServer();
+                StudioSelectionServices.startServer();
             }
         });
         startServerButton.setBorder(new EmptyBorder(20, 5, 20, 5));
@@ -104,107 +101,6 @@ public class StudioSelectionPopup extends JDialog {
         getContentPane().add(container);
         pack();
         setLocationRelativeTo(parent);
-
-    }
-    private void joinServer(String[] server) {
-        //create new external server with correct credentials
-        ExternalConnectedServer.getInstance().initialiseServer(server);
-    }
-
-    private void startServer() {
-        ChatArea.getInstance().addBannerAlert("You've started your own studio!");
-        InternalServer.getInstance();
-        UI.getInstance().internalServerSetup();
-    }
-
-    private void processInviteCode() {
-
-        JDialog dialog = new JDialog(this, true);
-
-        dialog.setSize(300, 150);
-        dialog.setLocationRelativeTo(parent);
-        dialog.setLayout(new BorderLayout());
-
-        JLabel label = new JLabel("Enter a valid invitation code");
-        label.setFont(label.getFont().deriveFont(Font.BOLD, 15.0F));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        dialog.add(label, BorderLayout.NORTH);
-
-        JTextField inputField = new JTextField();
-        inputField.setBorder(new EmptyBorder(0, 10, 0, 10));
-        inputField.setHorizontalAlignment(SwingConstants.CENTER);
-        dialog.add(inputField, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel(new BorderLayout());
-        JLabel errorMsg = new JLabel("");
-        errorMsg.setForeground(Color.RED);
-        errorMsg.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JButton okButton = new JButton("Use Code");
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String[] decodedCode = KidPaint.decode(inputField.getText());
-                    isActive = false;
-                    dialog.dispose();
-                    dispose();
-                    joinServer(new String[]{"Remote User", decodedCode[0], decodedCode[1]});
-            }
-        });
-
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
-            }
-        });
-
-
-
-        buttonPanel.add(errorMsg, BorderLayout.NORTH);
-
-        buttonPanel.add(okButton, BorderLayout.WEST);
-        buttonPanel.add(cancelButton, BorderLayout.EAST);
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
-
-        dialog.show();
-
-
-    }
-
-    private String[] useInviteCode(JDialog dialog, String code) {
-        String decodedIp;
-        String decodedPort = "12000";
-        try {
-            decodedIp = StudioSelectionPopup.decodeInvitationCode(code);
-        } catch (Exception e) {
-            return new String[0];
-        }
-        return new String[]{"Remote User", decodedIp, decodedPort};
-    }
-
-    public static String decodeInvitationCode(String encodedIp) throws Exception {
-
-        if (encodedIp.length() < 8) throw new Exception("Invalid code");
-        String decode = "";
-        // Remove "kpt::" prefix
-        for (int i = encodedIp.length() - 8; i < encodedIp.length(); i++)
-            decode += encodedIp.charAt(i);
-
-
-        StringBuilder ipString = new StringBuilder();
-
-        for (int i = 0; i < decode.length(); i += 2) {
-            String hexByte = decode.substring(i, i + 2);
-            int d = Integer.parseInt(hexByte, 16);
-            ipString.append(d);
-
-            if (i < decode.length() - 2) {
-                ipString.append(".");
-            }
-        }
-        return ipString.toString();
 
     }
 
