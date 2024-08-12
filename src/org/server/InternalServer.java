@@ -1,6 +1,6 @@
 package org.server;
 
-import org.gui.ChatArea;
+import org.gui.chat.ChatArea;
 import org.KidPaint;
 import org.gui.UI;
 import org.gui.UserNameInput;
@@ -8,7 +8,6 @@ import org.gui.UserNameInput;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class InternalServer {
     private static InternalServer instance = null;

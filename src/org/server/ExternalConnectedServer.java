@@ -1,6 +1,6 @@
 package org.server;
 
-import org.gui.ChatArea;
+import org.gui.chat.ChatArea;
 import org.KidPaint;
 import org.gui.UI;
 import org.gui.UserNameInput;

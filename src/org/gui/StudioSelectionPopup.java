@@ -1,6 +1,7 @@
 package org.gui;
 
 import org.KidPaint;
+import org.gui.chat.ChatArea;
 import org.server.ExternalConnectedServer;
 import org.server.InternalServer;
 import org.server.ServerFinder;
@@ -10,11 +11,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.net.BindException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StudioSelectionPopup extends JDialog {
     private static StudioSelectionPopup instance = null;

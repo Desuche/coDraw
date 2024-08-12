@@ -1,7 +1,7 @@
 package org;
 
 
-import org.gui.ChatArea;
+import org.gui.chat.ChatArea;
 import org.gui.StudioSelectionPopup;
 import org.gui.UI;
 import org.gui.UserNameInput;
