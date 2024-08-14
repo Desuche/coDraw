@@ -10,12 +10,13 @@ import org.utils.NetworkUtils;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class InternalServer {
+    private Logger logger = Logger.getLogger("global");
     private static InternalServer instance = null;
     private final ArrayList<Socket> subscribers;
     private final int port;
-
     ServerSocket internalServerSocket;
 
     public static InternalServer getInstance() {
@@ -40,7 +41,7 @@ public class InternalServer {
     }
 
     private InternalServer() {
-        System.out.println("Internal Server starting");
+        logger.info("Internal Server starting");
         this.port = NetworkUtils.getFreeTCPPort();
         subscribers = new ArrayList<>();
         DiscoveryService.launchDiscoveryListener(port);
@@ -50,7 +51,7 @@ public class InternalServer {
 
             internalServerSocket = new ServerSocket(port);
 
-            System.out.println("Internal server socket listening at port : " + port);
+            logger.info("Internal server socket listening at port : " + port);
             Thread runner = new Thread(() -> {
                 run();
             });
@@ -59,7 +60,7 @@ public class InternalServer {
             e.printStackTrace();
         }
 
-        System.out.println("Internal Server started");
+        logger.info("Internal Server started");
     }
 
     public String getInvitationCode() {
@@ -99,13 +100,13 @@ public class InternalServer {
 
 
     private void serve(Socket clientSocket) throws IOException {
-        System.out.println("Internal Server is now serving " + clientSocket.getInetAddress());
+        logger.info("Internal Server is now serving " + clientSocket.getInetAddress());
         DataInputStream in = new DataInputStream(clientSocket.getInputStream());
 
 
         while (true) {
             ServerMessage message = ServerMessage.getServerMessage( in.readInt() );
-            System.out.println("Got message of type " + message + " from" + clientSocket.getInetAddress());
+            logger.info("Got message of type " + message + " from" + clientSocket.getInetAddress());
 
             switch (message) {
                 case ChatMessage:
@@ -143,7 +144,7 @@ public class InternalServer {
 
             synchronized (subscribers) {
                 for (int i = 0; i < subscribers.size(); i++) {
-                    System.out.println("Sending data to sub: " + subscribers.get(i));
+                    logger.info("Sending data to sub: " + subscribers.get(i));
                     try {
                         Socket s = subscribers.get(i);
                         DataOutputStream out = new DataOutputStream(s.getOutputStream());
@@ -154,14 +155,14 @@ public class InternalServer {
                         out.write(chatBuffer, 0, chatLen);
                         out.flush();
                     } catch (IOException ex) {
-                        System.out.println("Client already disconnected");
+                        logger.info("Client already disconnected");
                         ex.printStackTrace();
                     }
 
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error here handle my ownmessage");
+            logger.info("Error here handle my ownmessage");
             e.printStackTrace();
         }
     }
@@ -181,14 +182,14 @@ public class InternalServer {
                         out.writeInt(penSize);
                         out.flush();
                     } catch (IOException ex) {
-                        System.out.println("Client already disconnected");
+                        logger.info("Client already disconnected");
                         ex.printStackTrace();
                     }
 
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error here handlemyownmessage");
+            logger.info("Error here handlemyownmessage");
             e.printStackTrace();
         }
     }
@@ -206,14 +207,14 @@ public class InternalServer {
                         out.writeInt(y);
                         out.flush();
                     } catch (IOException ex) {
-                        System.out.println("Client already disconnected");
+                        logger.info("Client already disconnected");
                         ex.printStackTrace();
                     }
 
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error here handlemyownmessage");
+            logger.info("Error here handlemyownmessage");
             e.printStackTrace();
         }
     }
@@ -226,7 +227,7 @@ public class InternalServer {
         int[] outputBlockSize = new int[1];
         UI.loadDrawingFromFileIntoDataArray(file, outputDataArray, outputBlockSize, success);
         if (!success[0]) {
-            System.out.println("Loading failed at server: unable to properly load the file sent by the client");
+            logger.info("Loading failed at server: unable to properly load the file sent by the client");
             return;
         }
         //update the server's own data array
@@ -249,7 +250,7 @@ public class InternalServer {
 
 
             synchronized (subscribers) {
-                System.out.println("" + subscribers.size() + "Subscribers");
+                logger.info("" + subscribers.size() + "Subscribers");
                 for (int i = 0; i < subscribers.size(); i++) {
                     try {
                         FileInputStream insend = new FileInputStream(file);
@@ -274,14 +275,14 @@ public class InternalServer {
                         outsend.flush();
                         insend.close();
                     } catch (IOException ex) {
-                        System.out.println("Load my file error Internal server");
+                        logger.info("Load my file error Internal server");
                         ex.printStackTrace();
                     }
 
                 }
             }
         } catch (Exception e) {
-            System.out.println("Load my file error Internal server");
+            logger.info("Load my file error Internal server");
         }
 
     }
@@ -314,7 +315,7 @@ public class InternalServer {
                     outsend.flush();
                     insend.close();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                     ex.printStackTrace();
                 }
 
@@ -347,7 +348,6 @@ public class InternalServer {
                             int len = in.read(buffer, 0, buffer.length);
                             out.write(buffer, 0, len);
                             size -= len;
-                            System.out.print(".");
                         }
                         out.flush();
                         in.close();

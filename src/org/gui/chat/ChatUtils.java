@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.logging.Logger;
 
 public class ChatUtils {
+    private static Logger logger = Logger.getLogger("global");
 
     protected static void downloadChatFile(File chatFile) {
         try {
@@ -27,7 +29,7 @@ public class ChatUtils {
                 return;
             }
         } catch (IOException e) {
-            System.out.println("Download file failed");
+            logger.info("Download file failed");
         }
     }
 
@@ -52,7 +54,7 @@ public class ChatUtils {
                 return;
             }
         } catch (IOException e) {
-            System.out.println("Download image failed");
+            logger.info("Download image failed");
         }
     }
 }

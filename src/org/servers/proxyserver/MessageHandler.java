@@ -7,8 +7,10 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class MessageHandler {
+    private static Logger logger = Logger.getLogger("global");
     private MessageHandler(){}
 
     protected static void handleChatMessage(DataInputStream in) throws IOException{
@@ -52,7 +54,7 @@ public class MessageHandler {
         while (new File(imageName).exists()){
             imageName = "_" + imageName;
         }
-        System.out.println("Downloading Image");
+        logger.info("Downloading Image");
         File outputImage = new File(imageName);
         FileOutputStream outImage = new FileOutputStream(outputImage);
 
@@ -67,7 +69,7 @@ public class MessageHandler {
         }
         outImage.flush();
         outImage.close();
-        System.out.println("Download complete");
+        logger.info("Download complete");
 
         ChatArea.getInstance().addImageMessage(outputImage, incomingUsername2);
     }
@@ -86,7 +88,7 @@ public class MessageHandler {
         while (new File(fileName).exists()){
             fileName = "_" + fileName;
         }
-        System.out.println("Downloading File from server "+ fileName);
+        logger.info("Downloading File from server "+ fileName);
         File outputFile = new File(fileName);
         FileOutputStream outFile = new FileOutputStream(outputFile);
 
@@ -132,7 +134,7 @@ public class MessageHandler {
             while (new File(fileName).exists()){
                 fileName = "_" + fileName;
             }
-            System.out.println("Downloading File from server " + fileName);
+            logger.info("Downloading File from server " + fileName);
             File outputFile = new File(fileName);
             FileOutputStream outFile = new FileOutputStream(outputFile);
 
@@ -146,11 +148,11 @@ public class MessageHandler {
             }
             outFile.flush();
             outFile.close();
-            System.out.println("File read complete");
+            logger.info("File read complete");
             return outputFile;
         }
         catch (Exception e){
-            System.out.println("readCompleteFileFromServer()");
+            logger.info("readCompleteFileFromServer()");
             return null;
         }
 

@@ -8,8 +8,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 
 public class StudioSelectionUI extends JDialog {
+    private static Logger logger = Logger.getLogger("global");
     private static StudioSelectionUI instance = null;
     protected final JFrame parentElement;
     protected final JPanel serverListPanel;
@@ -40,7 +42,7 @@ public class StudioSelectionUI extends JDialog {
         serverListPanel.setLayout(new BoxLayout(serverListPanel, BoxLayout.Y_AXIS));
         serverListPanel.setBorder(new EmptyBorder(15, 15, 5, 15));
 
-        System.out.println("getting servers");
+        logger.info("getting servers");
         for (String[] server : DiscoveryService.getServers()) {
             String studioName = server[0]+ "'s studio";
             JButton button = new JButton(studioName);

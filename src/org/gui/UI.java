@@ -30,15 +30,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-enum PaintMode {Pixel, Area, Shape};
+enum PaintMode {Pixel, Area, Shape}
 
 public class UI extends JFrame {
+    private static Logger logger = Logger.getLogger("global");
     private JTextField msgField;
     private JPanel toolPanel;
     private ChatArea chatArea;
@@ -517,7 +519,7 @@ public class UI extends JFrame {
 
 
         } else {
-            System.out.println("Sending photo cancelled");
+            logger.info("Sending photo cancelled");
             return;
         }
 
@@ -539,7 +541,7 @@ public class UI extends JFrame {
             }
 
         } else {
-            System.out.println("Sending file cancelled");
+            logger.info("Sending file cancelled");
             return;
         }
 
@@ -746,7 +748,7 @@ public class UI extends JFrame {
                 JOptionPane.showMessageDialog(UI.getInstance(),
                         "File not found!");
             } else {
-                System.out.println(e.getMessage());
+                logger.info(e.getMessage());
             }
         }
         success[0] = true;

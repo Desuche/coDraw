@@ -9,8 +9,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.logging.Logger;
 
 public class DiscoveryBroadcastListener {
+    private static Logger logger = Logger.getLogger("global");
     protected DatagramSocket responderSocket;
     private int internalServerPort;
     protected DiscoveryBroadcastListener(int internalServerPort){
@@ -24,13 +26,13 @@ public class DiscoveryBroadcastListener {
             int responderPort = DiscoveryService.discoveryServicePortList[i];
             try {
                 socket = new DatagramSocket(responderPort);
-                System.out.println("Setting up server responder at port" + responderPort);
+                logger.info("Setting up server responder at port" + responderPort);
                 break;
             } catch (SocketException e){
             }
             if (i == DiscoveryService.discoveryServicePortList.length - 1){
-                System.out.println("Maximum Kidpaint servers active");
-                System.out.println(" ( could be that kidpaint ports are in use by other system processes )");
+                logger.info("Maximum Kidpaint servers active");
+                logger.info(" ( could be that kidpaint ports are in use by other system processes )");
                 return false;
             }
         }
@@ -49,7 +51,7 @@ public class DiscoveryBroadcastListener {
                 try {
                     responderSocket.receive(packet);
                 } catch (SocketException e) {
-                    System.out.println(e);
+                    logger.severe("Receiving-Socket exception" + e);
                     return;
                 } catch (IOException e) {
                     throw new RuntimeException(e);

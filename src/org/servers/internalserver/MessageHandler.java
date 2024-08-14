@@ -6,8 +6,10 @@ import org.gui.chat.ChatArea;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class MessageHandler {
+    private static Logger logger = Logger.getLogger("global");
 
     private MessageHandler(){}
 
@@ -22,9 +24,9 @@ public class MessageHandler {
 
         ChatArea.getInstance().addMessage(new String(chatBuffer, 0, chatLen), new String(userNameBuffer, 0, userNameLen));
         synchronized (subscribers) {
-            System.out.println("" + subscribers.size() + "Subscribers");
+            logger.info("" + subscribers.size() + "Subscribers");
             for (int i = 0; i < subscribers.size(); i++) {
-                System.out.println("Sending data to sub: " + subscribers.get(i));
+                logger.info("Sending data to sub: " + subscribers.get(i));
                 try {
                     Socket s = subscribers.get(i);
                     DataOutputStream out = new DataOutputStream(s.getOutputStream());
@@ -35,7 +37,7 @@ public class MessageHandler {
                     out.write(chatBuffer, 0, chatLen);
                     out.flush();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                 }
 
             }
@@ -63,7 +65,7 @@ public class MessageHandler {
                     out.writeInt(pensize);
                     out.flush();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                     ex.printStackTrace();
                 }
 
@@ -88,7 +90,7 @@ public class MessageHandler {
                     out.writeInt(y);
                     out.flush();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                     ex.printStackTrace();
                 }
 
@@ -106,7 +108,7 @@ public class MessageHandler {
 
         in.read(buffer, 0, fileNameSize);
         String fileName = new String(buffer, 0, fileNameSize);
-        System.out.println("Downloading File");
+        logger.info("Downloading File");
 
 
         long fileSize = in.readLong();
@@ -130,7 +132,7 @@ public class MessageHandler {
         int[] outputBlockSize = new int[1];
         UI.loadDrawingFromFileIntoDataArray(file, outputDataArray, outputBlockSize, success);
         if (!success[0]) {
-            System.out.println("Loading failed at server: unable to properly load the file sent by the client");
+            logger.info("Loading failed at server: unable to properly load the file sent by the client");
             return;
         }
         //update the server's own data array
@@ -138,7 +140,7 @@ public class MessageHandler {
 
 //        send this new data to all subscribers
         synchronized (subscribers) {
-            System.out.println("" + subscribers.size() + "Subscribers");
+            logger.info("" + subscribers.size() + "Subscribers");
             for (int i = 0; i < subscribers.size(); i++) {
                 try {
                     FileInputStream insend = new FileInputStream(file);
@@ -163,7 +165,7 @@ public class MessageHandler {
                     outsend.flush();
                     insend.close();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                     ex.printStackTrace();
                 }
 
@@ -183,7 +185,7 @@ public class MessageHandler {
 
         in.read(buffer, 0, fileNameSize);
         String fileName = new String(buffer, 0, fileNameSize);
-        System.out.println("Downloading File"+ fileName);
+        logger.info("Downloading File"+ fileName);
 
 
         long fileSize = in.readLong();
@@ -196,7 +198,7 @@ public class MessageHandler {
             out.write(buffer, 0, len);
             fileSize = fileSize - len;
         }
-        System.out.println("Download complete");
+        logger.info("Download complete");
         out.close();
 
 
@@ -230,7 +232,7 @@ public class MessageHandler {
                     outsend.flush();
                     insend.close();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                     ex.printStackTrace();
                 }
 
@@ -250,7 +252,7 @@ public class MessageHandler {
 
         in.read(buffer, 0, imageNameSize);
         String imageName = new String(buffer, 0, imageNameSize);
-        System.out.println("Downloading Image");
+        logger.info("Downloading Image");
 
 
         long imageSize = in.readLong();
@@ -263,7 +265,7 @@ public class MessageHandler {
             out.write(buffer, 0, len);
             imageSize = imageSize - len;
         }
-        System.out.println("Download complete");
+        logger.info("Download complete");
         out.close();
 
         ChatArea.getInstance().addImageMessage(outputImage, username);
@@ -296,7 +298,7 @@ public class MessageHandler {
                     outsend.flush();
                     insend.close();
                 } catch (IOException ex) {
-                    System.out.println("Client already disconnected");
+                    logger.info("Client already disconnected");
                     ex.printStackTrace();
                 }
 

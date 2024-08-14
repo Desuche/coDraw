@@ -9,11 +9,13 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 /**
  * This object represents a proxy for an external server which this coDraw instance is connected to
  * */
 public class ExternalConnectedServer {
+    private static Logger logger = Logger.getLogger("global");
     private static ExternalConnectedServer instance = null;
     private boolean isIntialised = false;
     private Socket externalSocket = null;
@@ -34,7 +36,7 @@ public class ExternalConnectedServer {
 
     public static void kill(){
         try {
-            System.out.println("killing socket now");
+            logger.info("killing socket now");
             if (getInstance().externalSocket != null) getInstance().externalSocket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -46,7 +48,7 @@ public class ExternalConnectedServer {
         String username = serverDetails[0];
         String ip = serverDetails[1];
         int port = Integer.parseInt(serverDetails[2]);
-        System.out.println("Connected server's port is " + port);
+        logger.info("Connected server's port is " + port);
         InetAddress server;
         try {
             server = InetAddress.getByName(ip);
@@ -54,7 +56,7 @@ public class ExternalConnectedServer {
             in = new DataInputStream(externalSocket.getInputStream());
             out = new DataOutputStream(externalSocket.getOutputStream());
         } catch (Exception e) {
-            System.out.println("This is an immediate exception " + e.getMessage());
+            logger.info("This is an immediate exception " + e.getMessage());
             CoDraw.core.serverNotFound();
             return;
         }
@@ -77,7 +79,7 @@ public class ExternalConnectedServer {
             out.write(message.getBytes(), 0, message.length());
             out.flush();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -94,7 +96,7 @@ public class ExternalConnectedServer {
             out.writeInt(penSize);
             out.flush();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -109,7 +111,7 @@ public class ExternalConnectedServer {
             out.writeInt(y);
             out.flush();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -144,7 +146,7 @@ public class ExternalConnectedServer {
             System.err.println("Unable upload file " + file);
             e.printStackTrace();
         }
-        System.out.println("\nUpload completed.");
+        logger.info("\nUpload completed.");
 
 
     }
@@ -178,7 +180,7 @@ public class ExternalConnectedServer {
             System.err.println("Unable upload file " + file);
             e.printStackTrace();
         }
-        System.out.println("\nUpload completed.");
+        logger.info("\nUpload completed.");
     }
 
     public void sendImageMessage(File file) {
@@ -205,7 +207,7 @@ public class ExternalConnectedServer {
                 size -= len;
                 System.out.print(".");
             }
-            System.out.println("\nUpload completed.");
+            logger.info("\nUpload completed.");
         } catch (Exception e) {
             System.err.println("Unable upload file " + file);
             e.printStackTrace();
@@ -215,9 +217,9 @@ public class ExternalConnectedServer {
 
 
     private void listenToExternalServer() {
-        System.out.println("Listening to external server:");
+        logger.info("Listening to external server:");
         Thread t = new Thread(() -> {
-            System.out.println(externalSocket.getInetAddress().getHostName());
+            logger.info(externalSocket.getInetAddress().getHostName());
             while (true) {
                 try {
                     ServerMessage message = ServerMessage.getServerMessage(in.readInt());
@@ -242,11 +244,11 @@ public class ExternalConnectedServer {
                             MessageHandler.handleImageMessage(in);
                             break;
                         default:
-                            System.out.println("Unknown message type received");
+                            logger.info("Unknown message type received");
                     }
 
                 } catch (SocketException e) {
-                    System.out.println("External server is down");
+                    logger.info("External server is down");
                     CoDraw.core.restart();
                     return;
                 } catch (IOException e){

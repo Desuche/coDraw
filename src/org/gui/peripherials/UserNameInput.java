@@ -10,8 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.logging.Logger;
 
 public class UserNameInput extends JDialog {
+    private static Logger logger = Logger.getLogger("global");
     private static UserNameInput instance = null;
     private final JTextField inputField;
     private String inputText;
@@ -72,7 +74,7 @@ public class UserNameInput extends JDialog {
     private void execute(JFrame parent){
         if (inputField.getText().isEmpty()) return;
         inputText = inputField.getText();
-        System.out.println("Username is " + inputText);
+        logger.info("Username is " + inputText);
         ((UI)parent).loadusername(inputText);
         dispose();
         if (studioSelectionUI != null){

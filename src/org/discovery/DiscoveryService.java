@@ -1,8 +1,10 @@
 package org.discovery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiscoveryService {
+    private DiscoveryService(){}
     protected static int[] discoveryServicePortList = new int[]{22222,33333,44444};
 
     public static void kill(){
@@ -23,11 +25,10 @@ public class DiscoveryService {
         DiscoveryRequestBroadcaster.getInstance();
     }
 
-    public static ArrayList<String[]> getServers(){
+    public static List<String[]> getServers(){
         try {
             Thread.sleep(500);
         } catch (InterruptedException e){
-
         }
         return DiscoveryRequestBroadcaster.getInstance().servers;
     }

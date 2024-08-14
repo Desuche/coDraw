@@ -5,8 +5,10 @@ import org.utils.NetworkUtils;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class DiscoveryRequestBroadcaster {
+    private static Logger logger = Logger.getLogger("global");
     private static DiscoveryRequestBroadcaster instance = null;
     DatagramSocket socket;
     int port = NetworkUtils.getFreeUDPPort();
@@ -28,7 +30,7 @@ public class DiscoveryRequestBroadcaster {
             socket = new DatagramSocket(port);
 
         } catch (SocketException e) {
-            System.out.println(port);
+            logger.severe("Opening socket at UDP port" + port + "failed");
             throw new RuntimeException(e);
         }
 
@@ -46,7 +48,7 @@ public class DiscoveryRequestBroadcaster {
                 socket.send(packet);
             }
         } catch (IOException e) {
-            System.out.println("Server finding failed");
+            logger.severe("Server finding failed");
             e.printStackTrace();
         }
 
@@ -57,7 +59,7 @@ public class DiscoveryRequestBroadcaster {
                 try {
                     socket.receive(packet);
                 } catch (SocketException e) {
-                    System.out.println(e);
+                    logger.severe("Socket exception occurred" + e);
                     return;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -66,7 +68,7 @@ public class DiscoveryRequestBroadcaster {
                 String str = new String(data, 0, packet.getLength());
                 if (str.startsWith("Server:")) {
                     //Server:~<username>~<server port>
-                    System.out.println(str);
+                    logger.info(str);
                     String[] serverData = str.split("~");
                     String username = serverData[1];
                     String[] server= new String[3];
