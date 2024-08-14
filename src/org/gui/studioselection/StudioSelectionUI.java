@@ -1,7 +1,7 @@
 package org.gui.studioselection;
 
+import org.discovery.DiscoveryService;
 import org.gui.UI;
-import org.server.ServerFinder;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 public class StudioSelectionUI extends JDialog {
     private static StudioSelectionUI instance = null;
-    protected final JFrame parent;
+    protected final JFrame parentElement;
     protected final JPanel serverListPanel;
 
     protected boolean isActive = true;
@@ -24,16 +24,16 @@ public class StudioSelectionUI extends JDialog {
     }
 
     public static void kill(){
-        ServerFinder.kill();
+        DiscoveryService.kill();
         instance = null;
     }
 
 
-    private StudioSelectionUI(JFrame parent) {
-        super(parent, true);
-        this.parent = parent;
+    private StudioSelectionUI(JFrame parentElement) {
+        super(parentElement, true);
+        this.parentElement = parentElement;
 
-        ServerFinder.getInstance();
+        DiscoveryService.findServers();
 
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
@@ -42,7 +42,7 @@ public class StudioSelectionUI extends JDialog {
         serverListPanel.setBorder(new EmptyBorder(15, 15, 5, 15));
 
         System.out.println("getting servers");
-        for (String[] server : ServerFinder.getServers()) {
+        for (String[] server : DiscoveryService.getServers()) {
             String studioName = server[0]+ "'s studio";
             JButton button = new JButton(studioName);
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,7 +53,7 @@ public class StudioSelectionUI extends JDialog {
                 public void actionPerformed(ActionEvent e) {
                     isActive = false;
                     dispose();
-                    StudioSelectionServices.joinServer(server);
+                    StudioSelectionService.joinServer(server);
                 }
             });
             serverListPanel.add(button);
@@ -68,7 +68,7 @@ public class StudioSelectionUI extends JDialog {
         JButton inviteCodeButton = new JButton("Use Invite Code");
         inviteCodeButton.setPreferredSize(new Dimension(130, 20));
         inviteCodeButton.addActionListener((ActionEvent e) -> {
-            StudioSelectionServices.processInviteCode(this);
+            StudioSelectionService.processInviteCode(this);
         });
 
         JPanel inviteCodeButtonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -80,7 +80,7 @@ public class StudioSelectionUI extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 isActive = false;
                 dispose();
-                StudioSelectionServices.startServer();
+                StudioSelectionService.startServer();
             }
         });
         startServerButton.setBorder(new EmptyBorder(20, 5, 20, 5));
@@ -100,7 +100,7 @@ public class StudioSelectionUI extends JDialog {
         container.setPreferredSize(new Dimension(300, 300));
         getContentPane().add(container);
         pack();
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(parentElement);
 
     }
 

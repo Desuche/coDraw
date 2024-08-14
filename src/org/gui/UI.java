@@ -3,8 +3,8 @@ package org.gui;
 import org.gui.chat.ChatArea;
 import org.gui.peripherials.ColorPicker;
 import org.gui.peripherials.UserNameInput;
-import org.server.ExternalConnectedServer;
-import org.server.InternalServer;
+import org.proxyserver.ExternalConnectedServer;
+import org.internalserver.InternalServer;
 
 import javax.swing.*;
 import java.awt.BorderLayout;

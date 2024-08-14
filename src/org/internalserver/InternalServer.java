@@ -1,5 +1,6 @@
-package org.server;
+package org.internalserver;
 
+import org.discovery.DiscoveryService;
 import org.gui.chat.ChatArea;
 import org.KidPaint;
 import org.gui.UI;
@@ -39,7 +40,7 @@ public class InternalServer {
     private InternalServer() {
         System.out.println("Internal Server started");
         subscribers = new ArrayList<>();
-        ServerFinder.launchServerResponder(port);
+        DiscoveryService.launchDiscoveryListener(port);
 
 
         try {

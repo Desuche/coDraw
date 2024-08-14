@@ -1,4 +1,4 @@
-package org.server;
+package org.proxyserver;
 
 import org.gui.chat.ChatArea;
 import org.KidPaint;
@@ -30,7 +30,6 @@ public class ExternalConnectedServer {
             System.out.println("killing socket now");
             if (getInstance().externalSocket != null) getInstance().externalSocket.close();
         } catch (IOException e) {
-            System.out.println("found you exception");
             throw new RuntimeException(e);
         }
         instance = null;

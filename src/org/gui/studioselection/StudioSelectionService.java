@@ -3,8 +3,8 @@ package org.gui.studioselection;
 import org.KidPaint;
 import org.gui.UI;
 import org.gui.chat.ChatArea;
-import org.server.ExternalConnectedServer;
-import org.server.InternalServer;
+import org.proxyserver.ExternalConnectedServer;
+import org.internalserver.InternalServer;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +12,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class StudioSelectionServices {
+public class StudioSelectionService {
+
+    private StudioSelectionService(){
+
+    }
+
     protected static void joinServer(String[] server) {
         //create new external server with correct credentials
         ExternalConnectedServer.getInstance().initialiseServer(server);
@@ -29,7 +34,7 @@ public class StudioSelectionServices {
         JDialog dialog = new JDialog(studioSelectionUI, true);
 
         dialog.setSize(300, 150);
-        dialog.setLocationRelativeTo(studioSelectionUI.parent);
+        dialog.setLocationRelativeTo(studioSelectionUI.parentElement);
         dialog.setLayout(new BorderLayout());
 
         JLabel label = new JLabel("Enter a valid invitation code");
