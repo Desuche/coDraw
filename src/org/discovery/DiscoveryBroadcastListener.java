@@ -1,7 +1,7 @@
 package org.discovery;
 
 import org.gui.peripherials.UserNameInput;
-import org.internalserver.InternalServer;
+import org.servers.internalserver.InternalServer;
 
 
 import java.io.IOException;

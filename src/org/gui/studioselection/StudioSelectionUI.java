@@ -23,8 +23,7 @@ public class StudioSelectionUI extends JDialog {
         return instance;
     }
 
-    public static void kill(){
-        DiscoveryService.kill();
+    protected static void kill(){
         instance = null;
     }
 
@@ -33,7 +32,7 @@ public class StudioSelectionUI extends JDialog {
         super(parentElement, true);
         this.parentElement = parentElement;
 
-        DiscoveryService.findServers();
+        DiscoveryService.sendBroadcastToServers();
 
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 

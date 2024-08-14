@@ -3,8 +3,9 @@ package org.gui;
 import org.gui.chat.ChatArea;
 import org.gui.peripherials.ColorPicker;
 import org.gui.peripherials.UserNameInput;
-import org.proxyserver.ExternalConnectedServer;
-import org.internalserver.InternalServer;
+import org.servers.proxyserver.ExternalConnectedServer;
+import org.servers.internalserver.InternalServer;
+import org.utils.NetworkUtils;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
@@ -85,7 +86,7 @@ public class UI extends JFrame {
      * private constructor. To create an instance of UI, call UI.getInstance() instead.
      */
     private UI() {
-        setTitle("KidPaint");
+        setTitle("CoDraw");
 
         JPanel basePanel = new JPanel();
         getContentPane().add(basePanel, BorderLayout.CENTER);
@@ -323,7 +324,7 @@ public class UI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 FileNameExtensionFilter fileFiler = new FileNameExtensionFilter(
-                        "KidPaint Files", "kpt");
+                        "CoDraw Files", "kpt");
                 fileChooser.setFileFilter(fileFiler);
                 int option = fileChooser.showOpenDialog(UI.this);
                 if (option == JFileChooser.APPROVE_OPTION) {
@@ -340,7 +341,7 @@ public class UI extends JFrame {
                         }
 
                     } else {
-                        ExternalConnectedServer.getInstance().sendLoadFileToServer(selectedFile);
+                        ExternalConnectedServer.getInstance().sendDataLoadMessage(selectedFile);
                     }
                     JOptionPane.showMessageDialog(UI.this,
                             "Loading file: " + selectedFile.getAbsolutePath());
@@ -357,7 +358,7 @@ public class UI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 FileNameExtensionFilter fileFiler = new FileNameExtensionFilter(
-                        "KidPaint Files", "kpt");
+                        "CoDraw Files", "kpt");
                 fileChooser.setFileFilter(fileFiler);
                 int option = fileChooser.showSaveDialog(UI.this);
                 if (option == JFileChooser.APPROVE_OPTION) {
@@ -805,7 +806,7 @@ public class UI extends JFrame {
     }
 
     public void internalServerSetup(){
-        String code = InternalServer.getInvitationCode();
+        String code = InternalServer.getInstance().getInvitationCode();
         JButton inviteCodeButton = new JButton("Invite Others");
         inviteCodeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

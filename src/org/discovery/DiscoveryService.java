@@ -19,7 +19,7 @@ public class DiscoveryService {
         }
     }
 
-    public static void findServers(){
+    public static void sendBroadcastToServers(){
         DiscoveryRequestBroadcaster.getInstance();
     }
 

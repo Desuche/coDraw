@@ -1,6 +1,6 @@
 package org.discovery;
 
-import org.KidPaint;
+import org.utils.NetworkUtils;
 
 import java.io.IOException;
 import java.net.*;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class DiscoveryRequestBroadcaster {
     private static DiscoveryRequestBroadcaster instance = null;
     DatagramSocket socket;
-    int port = KidPaint.getFreeUDPPort();
+    int port = NetworkUtils.getFreeUDPPort();
     ArrayList<String[]> servers;
     DatagramSocket responderSocket;
 

@@ -1,10 +1,11 @@
 package org.gui.studioselection;
 
-import org.KidPaint;
+import org.discovery.DiscoveryService;
 import org.gui.UI;
 import org.gui.chat.ChatArea;
-import org.proxyserver.ExternalConnectedServer;
-import org.internalserver.InternalServer;
+import org.servers.proxyserver.ExternalConnectedServer;
+import org.servers.internalserver.InternalServer;
+import org.utils.EncodingUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -56,7 +57,7 @@ public class StudioSelectionService {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] decodedCode = KidPaint.decode(inputField.getText());
+                String[] decodedCode = EncodingUtils.decodeInvitation(inputField.getText());
                 studioSelectionUI.isActive = false;
                 dialog.dispose();
                 studioSelectionUI.dispose();
@@ -81,6 +82,11 @@ public class StudioSelectionService {
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         dialog.show();
+    }
+
+    public static void kill(){
+        DiscoveryService.kill();
+        StudioSelectionUI.kill();
     }
 
 }
